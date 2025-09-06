@@ -98,7 +98,8 @@ async def get_house_price(ctx, address: str) -> float:
 st.set_page_config(page_title="Renovation Task Refiner", page_icon="🏠", layout="wide")
 
 # Ensure API key is set (supports either env var or st.secrets)
-openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", "key_required")
+# openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", None)
+openai_key = "key_required"
 if openai_key:
     os.environ["OPENAI_API_KEY"] = openai_key
 
