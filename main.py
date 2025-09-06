@@ -5,6 +5,13 @@ from typing import Dict
 
 import streamlit as st
 from pydantic import BaseModel, Field
+
+# Ensure API key is set (supports either env var or st.secrets)
+# openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", None)
+openai_key = "key_required"
+if openai_key:
+    os.environ["OPENAI_API_KEY"] = openai_key
+
 from pydantic_ai import Agent
 
 
@@ -96,12 +103,6 @@ async def get_house_price(ctx, address: str) -> float:
 # Streamlit UI
 # ---------------------------
 st.set_page_config(page_title="Renovation Task Refiner", page_icon="🏠", layout="wide")
-
-# Ensure API key is set (supports either env var or st.secrets)
-# openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", None)
-openai_key = "key_required"
-if openai_key:
-    os.environ["OPENAI_API_KEY"] = openai_key
 
 # Initialize DB in session_state
 if "house_db" not in st.session_state:
