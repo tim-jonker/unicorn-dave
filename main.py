@@ -98,9 +98,11 @@ async def get_house_price(ctx, address: str) -> float:
 st.set_page_config(page_title="Renovation Task Refiner", page_icon="🏠", layout="wide")
 
 # Ensure API key is set (supports either env var or st.secrets)
-# openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", None)
-# if openai_key:
-#     os.environ["OPENAI_API_KEY"] = openai_key
+openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY", None)
+if openai_key:
+    os.environ["OPENAI_API_KEY"] = openai_key
+else:
+    os.environ["OPENAI_API_KEY"] = "key_required"
 
 # Initialize DB in session_state
 if "house_db" not in st.session_state:
@@ -174,11 +176,11 @@ with left:
     run_clicked = st.button("Run agent ✨", type="primary")
 
     if run_clicked:
-        # if not openai_key:
-        #     st.error(
-        #         "Missing OPENAI_API_KEY. Set it as an environment variable or add to st.secrets to continue."
-        #     )
-        if not user_prompt.strip():
+        if not openai_key:
+            st.error(
+                "Missing OPENAI_API_KEY. Set it as an environment variable or add to st.secrets to continue."
+            )
+        elif not user_prompt.strip():
             st.error("Please provide a task description.")
         else:
             # Build dependencies: we pass the DB connection; address is passed via the prompt itself.
